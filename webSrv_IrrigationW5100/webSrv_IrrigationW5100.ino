@@ -1,3 +1,6 @@
+// Скетч написан для ситемы полива огорода/газона
+// Железо Arduino Uno + Arduino Ethernet Shield W5100 + capacitive soil moisture v1.2
+// к выходу WATER_RELE подключено реле, которое открывает клапан полива
 
 #include <SPI.h>
 #include <Ethernet.h>
@@ -9,7 +12,7 @@
 // Enter a MAC address and IP address for your controller below.
 // The IP address will be dependent on your local network:
 byte mac[] = {
-  0xDE, 0xAD, 0xBE, 0xEF, 0xFE, 0xED
+  0xA8, 0x61, 0x0A, 0x4F, 0xFA, 0xED
 };
 IPAddress ip(192, 168, 1, 98);
 
@@ -21,8 +24,8 @@ EthernetServer server(80);
 void setup() {
 
   pinMode(WATER_RELE, OUTPUT);
-  
-  
+
+
   // You can use Ethernet.init(pin) to configure the CS pin
   //Ethernet.init(10);  // Most Arduino shields
   //Ethernet.init(5);   // MKR ETH shield
@@ -77,7 +80,7 @@ void loop() {
         if (c == '\n' && currentLineIsBlank) {
           // send a standard http response header
           client.println("HTTP/1.1 200 OK");
-          client.println("Content-Type: text/html; charset=utf-8");
+          client.println("Content-Type: text/html; charset=utf-8"); //обязательно кодировка шрифта для "не Mac" систем
           client.println("Connection: close");  // the connection will be closed after completion of the response
           client.println("Refresh: 5");  // обновление страницы в сек.
           client.println();
@@ -86,15 +89,15 @@ void loop() {
           client.println("<TITLE>Irrigation system</TITLE>");
           client.println("<body><H1>Оросительная система 3 этаж</H1>");
           client.println("<BODY bgcolor=black text=lime>");
-          
+
   int val = analogRead(WATER_SENSOR);//слушаю аналоговый вход
   //int absolut = analogRead(WATER_SENSOR); //прямое значение для юстировки сенсора
-    
- 
+
+
           val = map(val,606,313,0,100); //пересчитываю в проценты и создаю переменную
            delay (1000);
-           
-            
+
+
             client.print("Относительная влажность грунта: ");
             client.print(val);
             client.print(" % ");
@@ -130,4 +133,3 @@ void loop() {
     Serial.println("client disconnected");
   }
   }
-  
