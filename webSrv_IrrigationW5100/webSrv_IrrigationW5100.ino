@@ -82,13 +82,16 @@ void loop()
   sensors.requestTemperatures();
 
   bool releOn;
+  int start;
   if (temp < 0)
   {
     releOn = false;
+    start = 0;
   }
   else
   {
-    releOn = val < pow(temp, 0.8);
+    start = pow(temp, 0.8);
+    releOn = val < start;
   }
 
   digitalWrite(WATER_RELE, releOn ? LOW : HIGH);
