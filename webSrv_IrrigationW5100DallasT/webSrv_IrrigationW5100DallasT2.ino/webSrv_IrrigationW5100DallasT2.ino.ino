@@ -111,7 +111,7 @@ int irrigoff = (WATER_RELE, HIGH);
           client.println("HTTP/1.1 200 OK");
           client.println("Content-Type: text/html; charset=utf-8"); //обязательно кодировка шрифта для "не Mac" систем
           client.println("Connection: close");  // the connection will be closed after completion of the response
-          client.println("Refresh: 5");
+          client.println("Refresh: 5");  
           client.println();
           client.println("<!DOCTYPE HTML>");
           client.println("<html>");

@@ -70,29 +70,6 @@ void setup() {
 
 void loop() {
 
- int val = analogRead(WATER_SENSOR);//слушаю аналоговый вход
-//  val = constrain(val, 606, 313);
-  //int absolut = analogRead(WATER_SENSOR); //прямое значение для юстировки сенсора
-  int temp = sensors.getTempCByIndex(0);
-  
-
-          val = map(val,606,313,0,100); //пересчитываю в проценты и создаю переменную
-           delay (1000);
-sensors.requestTemperatures();
-  int start = pow(temp,0.8);
-
-  if (val < start) {
-    digitalWrite(WATER_RELE, LOW);
-    delay (1000);
-  }
-    else {
-    digitalWrite(WATER_RELE, HIGH);
-    delay (1000);
-    }
-int irrigon = (WATER_RELE, LOW);
-int irrigoff = (WATER_RELE, HIGH);
-
-    
    // listen for incoming clients
   EthernetClient client = server.available();
   if (client) {
@@ -111,31 +88,47 @@ int irrigoff = (WATER_RELE, HIGH);
           client.println("HTTP/1.1 200 OK");
           client.println("Content-Type: text/html; charset=utf-8"); //обязательно кодировка шрифта для "не Mac" систем
           client.println("Connection: close");  // the connection will be closed after completion of the response
-          client.println("Refresh: 5");
+          client.println("Refresh: 5");  // обновление страницы в сек.
           client.println();
           client.println("<!DOCTYPE HTML>");
           client.println("<html>");
           client.println("<TITLE>Irrigation system</TITLE>");
           client.println("<body><H1>Оросительная система 3 этаж</H1>");
           client.println("<BODY bgcolor=black text=lime>");
-          client.print("Относительная влажность грунта: ");
-          client.print(val);
-          client.print(" % ");
-          client.println("<br />");
-          client.print("Температура грунта: ");
-          client.print(temp);
-          client.print(" C ");            
-          client.println("<br />");
-          
-     if (irrigon) {       
-          client.print("Идёт полив");
-     }
-      else { (irrigoff);
-          client.print("Влажность грунта достаточная, полив включится при: ");
-          client.print(start);
-          client.print(" % ");
-      
-        }
+
+  int val = analogRead(WATER_SENSOR);//слушаю аналоговый вход
+//  val = constrain(val, 606, 313);
+  //int absolut = analogRead(WATER_SENSOR); //прямое значение для юстировки сенсора
+  int temp = sensors.getTempCByIndex(0);
+  
+
+          val = map(val,606,313,0,100); //пересчитываю в проценты и создаю переменную
+           delay (1000);
+sensors.requestTemperatures();
+  int start = pow(temp,0.8);
+   
+            client.print("Относительная влажность грунта: ");
+            client.print(val);
+            client.print(" % ");
+            client.println("<br />");
+            client.print("Температура грунта: ");
+            client.print(temp);
+            client.print(" C ");
+            client.println("<br />");
+          //  client.print(absolut);  //строка для юстировки датчика влажности
+          //  client.println("<br />"); //строка для юстировки датчика влажности/
+            if (val < start) {
+    digitalWrite(WATER_RELE, LOW);
+            client.print("Идёт полив");
+          delay (1000);
+            }
+            else {
+    digitalWrite(WATER_RELE, HIGH);
+             client.print("Влажность грунта достаточная, полив включится при: ");
+             client.print(start);
+            client.print(" % ");
+
+          }
           client.println("</html>");
           break;
         }
