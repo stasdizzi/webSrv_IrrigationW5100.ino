@@ -80,22 +80,19 @@ void loop()
   val = map(val, 606, 313, 0, 100); //пересчитываю в проценты и создаю переменную
   delay(1000);
   sensors.requestTemperatures();
-  int start = pow(temp, 0.8);
 
   bool releOn;
-
-  if (val < start)
+  if (temp < 0)
   {
-    digitalWrite(WATER_RELE, LOW);
-    releOn = true;
-    delay(1000);
+    releOn = false;
   }
   else
   {
-    digitalWrite(WATER_RELE, HIGH);
-    releOn = false;
-    delay(1000);
+    releOn = val < pow(temp, 0.8);
   }
+
+  digitalWrite(WATER_RELE, releOn ? HIGH : LOW);
+  delay(1000);
 
   // listen for incoming clients
   EthernetClient client = server.available();
