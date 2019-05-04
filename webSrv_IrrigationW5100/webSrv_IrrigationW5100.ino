@@ -74,7 +74,7 @@ void loop() {
 //  val = constrain(val, 606, 313);
   //int absolut = analogRead(WATER_SENSOR); //прямое значение для юстировки сенсора
   int temp = sensors.getTempCByIndex(0);
-  
+
 
           val = map(val,606,313,0,100); //пересчитываю в проценты и создаю переменную
            delay (1000);
@@ -89,10 +89,9 @@ sensors.requestTemperatures();
     digitalWrite(WATER_RELE, HIGH);
     delay (1000);
     }
-int irrigon = (WATER_RELE, LOW);
-int irrigoff = (WATER_RELE, HIGH);
 
-    
+
+
    // listen for incoming clients
   EthernetClient client = server.available();
   if (client) {
@@ -124,17 +123,17 @@ int irrigoff = (WATER_RELE, HIGH);
           client.println("<br />");
           client.print("Температура грунта: ");
           client.print(temp);
-          client.print(" C ");            
+          client.print(" C ");
           client.println("<br />");
-          
-     if (irrigon) {       
+
+     if (WATER_RELE, LOW) {
           client.print("Идёт полив");
      }
-      else { (irrigoff);
+      else { (WATER_RELE, HIGH);
           client.print("Влажность грунта достаточная, полив включится при: ");
           client.print(start);
           client.print(" % ");
-      
+
         }
           client.println("</html>");
           break;
