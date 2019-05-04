@@ -82,14 +82,18 @@ void loop()
   sensors.requestTemperatures();
   int start = pow(temp, 0.8);
 
+  bool releOn;
+
   if (val < start)
   {
     digitalWrite(WATER_RELE, LOW);
+    releOn = true;
     delay(1000);
   }
   else
   {
     digitalWrite(WATER_RELE, HIGH);
+    releOn = false;
     delay(1000);
   }
 
@@ -131,13 +135,12 @@ void loop()
           client.print(" C ");
           client.println("<br />");
 
-          if (WATER_RELE, LOW)
+          if (releOn)
           {
             client.print("Идёт полив");
           }
           else
           {
-            (WATER_RELE, HIGH);
             client.print("Влажность грунта достаточная, полив включится при: ");
             client.print(start);
             client.print(" % ");
