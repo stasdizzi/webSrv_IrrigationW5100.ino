@@ -91,7 +91,7 @@ void loop()
     releOn = val < pow(temp, 0.8);
   }
 
-  digitalWrite(WATER_RELE, releOn ? HIGH : LOW);
+  digitalWrite(WATER_RELE, releOn ? LOW : HIGH);
   delay(1000);
 
   // listen for incoming clients
