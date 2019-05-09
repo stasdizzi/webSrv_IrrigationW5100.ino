@@ -73,12 +73,11 @@ void loop()
 {
 
   int val = analogRead(WATER_SENSOR); //слушаю аналоговый вход
-                                      //  val = constrain(val, 606, 313);
-  //int absolut = analogRead(WATER_SENSOR); //прямое значение для юстировки сенсора
+
   int temp = sensors.getTempCByIndex(0);
 
-  val = map(val, 606, 313, 0, 100); //пересчитываю в проценты и создаю переменную
-  delay(1000);
+  val = map(val, 590, 275, 0, 100); //пересчитываю в проценты и создаю переменную
+ 
   sensors.requestTemperatures();
 
   bool releOn;
@@ -90,12 +89,12 @@ void loop()
   }
   else
   {
-    start = pow(temp, 0.8);
+    start = pow(temp, 0.8) +3;
     releOn = val < start;
   }
 
   digitalWrite(WATER_RELE, releOn ? LOW : HIGH);
-  delay(1000);
+  delay(1000 );
 
   // listen for incoming clients
   EthernetClient client = server.available();
