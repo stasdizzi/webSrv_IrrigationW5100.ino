@@ -89,7 +89,7 @@ void loop()
   }
   else
   {
-    start = pow(temp, 0.8) +3;
+    start = pow(temp, 1.1);
     releOn = val < start;
   }
 
