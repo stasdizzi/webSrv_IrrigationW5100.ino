@@ -76,7 +76,7 @@ void loop()
 
   int temp = sensors.getTempCByIndex(0);
 
-  val = map(val, 590, 230, 0, 100); //пересчитываю в проценты и создаю переменную
+  val = map(val, 597, 287, 0, 100); //пересчитываю в проценты и создаю переменную
  
   sensors.requestTemperatures();
 
