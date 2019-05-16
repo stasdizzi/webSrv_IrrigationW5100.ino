@@ -13,6 +13,8 @@
 OneWire oneWire(ONE_WIRE_BUS);
 DallasTemperature sensors(&oneWire);
 
+unsigned long ReleOnTime;
+
 // Enter a MAC address and IP address for your controller below.
 // The IP address will be dependent on your local network:
 byte mac[] = {
@@ -48,21 +50,6 @@ void setup()
 
   // start the Ethernet connection and the server:
   Ethernet.begin(mac, ip);
-
-  // Check for Ethernet hardware present
-  if (Ethernet.hardwareStatus() == EthernetNoHardware)
-  {
-    Serial.println("Ethernet shield was not found.  Sorry, can't run without hardware. :(");
-    while (true)
-    {
-      delay(1); // do nothing, no point running without Ethernet hardware
-    }
-  }
-  if (Ethernet.linkStatus() == LinkOFF)
-  {
-    Serial.println("Ethernet cable is not connected.");
-  }
-
   // start the server
   server.begin();
   Serial.print("server is at ");
@@ -71,7 +58,7 @@ void setup()
 
 void loop()
 {
-
+  
   int val = analogRead(WATER_SENSOR); //слушаю аналоговый вход
 
   int temp = sensors.getTempCByIndex(0);
@@ -79,7 +66,7 @@ void loop()
   val = map(val, 597, 287, 0, 100); //пересчитываю в проценты и создаю переменную
  
   sensors.requestTemperatures();
-
+  
   bool releOn;
   int start;
   if (temp < 0)
@@ -91,10 +78,12 @@ void loop()
   {
     start = pow(temp, 1.1);
     releOn = val < start;
-  }
-
+    }
+  
+if (millis() - ReleOnTime > 30000){
   digitalWrite(WATER_RELE, releOn ? LOW : HIGH);
-  delay(1000 );
+ ReleOnTime = millis();
+    }
 
   // listen for incoming clients
   EthernetClient client = server.available();
@@ -136,7 +125,7 @@ void loop()
 
           if (releOn)
           {
-            client.print("Идёт полив");
+            client.print("Идёт полив");           
           }
           else
           {
