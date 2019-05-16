@@ -76,14 +76,14 @@ void loop()
   }
   else
   {
+    if (millis() - ReleOnTime > 30000){
     start = pow(temp, 1.1);
     releOn = val < start;
+     ReleOnTime = millis();
+    }
     }
   
-if (millis() - ReleOnTime > 30000){
   digitalWrite(WATER_RELE, releOn ? LOW : HIGH);
- ReleOnTime = millis();
-    }
 
   // listen for incoming clients
   EthernetClient client = server.available();
