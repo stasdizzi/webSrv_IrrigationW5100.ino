@@ -77,7 +77,7 @@ void loop()
   else
   {
     if (millis() - ReleOnTime > 30000){
-    start = pow(temp, 1.2);
+    start = pow(temp, 1.3);
     releOn = val < start;
      ReleOnTime = millis();
     }
